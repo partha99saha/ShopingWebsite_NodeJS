@@ -5,7 +5,7 @@ exports.getAddProduct = (req, res, next) => {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
     editing: false
-  });
+  }); 
 };
 
 exports.postAddProduct = (req, res, next) => {
@@ -13,12 +13,11 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  req.user
-    .createProduct({
+  Product.create({
       title: title,
       price: price,
+      description: description,
       imageUrl: imageUrl,
-      description: description
     })
     .then(result => {
       // console.log(result);
@@ -36,9 +35,7 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  req.user
-    .getProducts({ where: { id: prodId } })
-    // Product.findById(prodId)
+Product.findAll({ where: { id: prodId } })
     .then(products => {
       const product = products[0];
       if (!product) {
@@ -66,7 +63,8 @@ exports.postEditProduct = (req, res, next) => {
       product.price = updatedPrice;
       product.description = updatedDesc;
       product.imageUrl = updatedImageUrl;
-      return product.save();
+      //console.log(product);
+      return Product.update(product,{where:{id:prodId}});
     })
     .then(result => {
       console.log('UPDATED PRODUCT!');
@@ -76,8 +74,7 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  req.user
-    .getProducts()
+  Product.findAll()
     .then(products => {
       res.render('admin/products', {
         prods: products,
@@ -92,7 +89,7 @@ exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   Product.findAll({where:{id:prodId}})
     .then(product => {
-      return product.destroy();
+      return Product.destroy({where:{id:prodId}});
     })
     .then(result => {
       console.log('DESTROYED PRODUCT');

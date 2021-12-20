@@ -16,13 +16,11 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-handlebars": "^6.0.2",
-    "g": "^2.0.1",
     "hbs": "^4.2.0",
-    "mysql": "^2.18.1",
     "mysql2": "^1.6.1",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.11",
     "pug": "^3.0.2",
     "request": "^2.88.2",
-    "sequelize": "^5.0.0-beta.11"
+    "sequelize": "~5.0.0-beta.11"
   }
 }

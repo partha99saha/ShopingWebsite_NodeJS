@@ -52,7 +52,7 @@ Product.belongsTo(User,{constrains : true, onDelete : 'CASCADE'})
 User.hasMany(Product);
 User.hasOne(Cart);
 Cart.belongsTo(User);
-Cart.belongsToMany(Product,{through:CartItem});
+Cart.belongsToMany(Product,{through:CartItem}); 
 Product.belongsToMany(Cart,{through:CartItem});
 
 
@@ -61,24 +61,21 @@ sequelize
 .sync()
 .then(result=>{
     //console.log(result);
-    return User.findAll({where:{id:1}});
-})
-.then(user=>{
+    const user = User.findAll({where:{id:1}});
     if(!user){
         return User.create({name:'max',email:"test@email.com"})
     }
     return user;
 })
 .then(user=>{
-    console.log(user);
-    //return user.createCart();
+    //console.log(user);
+    return Cart.create();
 })
 .catch(err=>{
     console.log(err);
 });
 
-let server= app.listen(port,()=>{
-    console.log("server started");
-    //console.log(port);
+app.listen(port,()=>{
+    console.log("----------Server Started----------");
 });
 
