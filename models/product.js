@@ -1,6 +1,5 @@
 const mongodb = require('mongodb');
 const getDb = require('../util/database').getDb;
-
 class Product {
   constructor(title, price, description, imageUrl, id,userId) {
     this.title = title;
@@ -11,7 +10,7 @@ class Product {
     this.userId = userId;
   }
   save() {
-    const db = getDb();
+    const db = getDb();      
     //update the product
     let dbOp;
     if(this._id){
