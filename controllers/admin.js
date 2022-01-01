@@ -18,16 +18,14 @@ exports.postAddProduct = (req, res, next) => {
     price : price,
     description : description,
     imageUrl : imageUrl,
-    userId : req.user._id
-  }
-  );
-
+    userId : req.user
+  });
   product
     .save()
     .then(result => {
-      console.log(result);
-      console.log(product);
-      console.log('Created Product');
+      //console.log(result);
+      //console.log(product);
+      console.log('Product Added');
       res.redirect('/admin/products');
     })
     .catch(err => {
@@ -63,7 +61,7 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
 
-  product.findById(prodId)
+  Product.findById(prodId)
   .then(product =>{
     product.title = updatedTitle,
     product.price = updatedPrice,
@@ -72,7 +70,7 @@ exports.postEditProduct = (req, res, next) => {
     return product.save();
   })
   .then(result => {
-      console.log('UPDATED PRODUCT!');
+      console.log('Product Updated');
       res.redirect('/admin/products');
     })
     .catch(err => console.log(err));
