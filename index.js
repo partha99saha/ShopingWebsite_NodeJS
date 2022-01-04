@@ -4,6 +4,7 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const csrf = require('csurf');
+const flash = require('connect-flash');
 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -40,6 +41,7 @@ app.use(session({
 
 const csrfProtection = csrf();
 app.use(csrfProtection);
+app.use(flash());
 
 app.use((req, res, next) => {
   if (!req.session.user) {
