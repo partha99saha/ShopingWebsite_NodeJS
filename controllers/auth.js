@@ -1,5 +1,7 @@
+require('dotenv').config()
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const mailer = require('./mail');
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error');
@@ -60,8 +62,8 @@ exports.postLogin = (req, res, next) => {
     .catch(err => console.log(err));
 };
 
-
 exports.postSignup = (req, res, next) => {
+  const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
@@ -75,6 +77,7 @@ exports.postSignup = (req, res, next) => {
         .hash(password, 12)
         .then(hashedPassword => {
           const user = new User({
+            name: name,
             email: email,
             password: hashedPassword,
             cart: { items: [] }
@@ -83,6 +86,16 @@ exports.postSignup = (req, res, next) => {
         })
         .then(result => {
           res.redirect('/login');
+            return mailer({
+            from: process.env.EMAIL,
+            to: req.body.email,
+            subject: 'Thanks For Signup',
+            html: "<h1>You successfully signed up!</h1>",
+            attachments: []
+        })
+          .catch(err => {
+            console.log(err);
+          });
         });
     })
     .catch(err => {
@@ -93,6 +106,6 @@ exports.postSignup = (req, res, next) => {
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);
-    res.redirect('/');
+    res.redirect('/login');
   });
 };
