@@ -25,7 +25,6 @@ const Product = require('./models/product');
 const User = require('./models/user');
 // const Cart = require('./models/cart');2
 
-
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
