@@ -126,7 +126,6 @@ exports.postSignup = (req, res, next) => {
       validationErrors: errors.array()
     });
   }
-
   bcrypt
     .hash(password, 12)
     .then(hashedPassword => {

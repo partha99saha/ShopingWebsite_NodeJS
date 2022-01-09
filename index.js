@@ -70,7 +70,7 @@ app.use(errorController.get404);
 mongoose
   .connect(process.env.MONGODB_URI)
   .then((result) => {
-    console.log("connected to MongoDB");
+    console.log("--- connected to MongoDB ---");
   })
   .catch((err) => {
     console.log(err);

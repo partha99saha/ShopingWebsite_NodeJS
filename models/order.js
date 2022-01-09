@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
+
 const orderSchema = new Schema({
   products: [
     {
@@ -9,9 +9,9 @@ const orderSchema = new Schema({
     }
   ],
   user: {
-    name: {
+    username: {
       type: String,
-      required: true
+      required: false
     },
     userId: {
       type: Schema.Types.ObjectId,
