@@ -5,9 +5,11 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+
 const session = require("express-session");
 const csrf = require("csurf");
 const csrfProtection = csrf();
+
 const flash = require("connect-flash");
 const MongoDBStore = require("connect-mongodb-session")(session);
 
@@ -23,8 +25,6 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 
-const Product = require("./models/product");
-
 app.set("view engine", "ejs");
 app.set("views", "views");
 
@@ -39,7 +39,6 @@ app.use(
     store: store,
   })
 );
-
 
 app.use(csrfProtection);
 app.use(flash());
@@ -67,7 +66,6 @@ app.use((req, res, next) => {
     });
 });
 
-
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
@@ -76,8 +74,6 @@ app.get('/500', errorController.get500);
 app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
-  // res.status(error.httpStatusCode).render(...);
-  // res.redirect('/500');
   res.status(500).render('500', {
     pageTitle: 'Error!',
     path: '/500',
