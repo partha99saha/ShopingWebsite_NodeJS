@@ -1,15 +1,13 @@
 require("dotenv").config();
-
 const path = require("path");
 const express = require("express");
 const app = express();
+
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
 const session = require("express-session");
 const csrf = require("csurf");
 const csrfProtection = csrf();
-
 const flash = require("connect-flash");
 const MongoDBStore = require("connect-mongodb-session")(session);
 
@@ -81,8 +79,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-mongoose
-  .connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI)
   .then((result) => {
     console.log("--- connected to MongoDB ---");
   })
