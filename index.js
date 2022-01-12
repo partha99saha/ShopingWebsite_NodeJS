@@ -4,7 +4,9 @@ const express = require("express");
 const app = express();
 
 const bodyParser = require("body-parser");
+const multer = require('multer');
 const mongoose = require("mongoose");
+
 const session = require("express-session");
 const csrf = require("csurf");
 const csrfProtection = csrf();
@@ -26,8 +28,25 @@ const authRoutes = require("./routes/auth");
 app.set("view engine", "ejs");
 app.set("views", "views");
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+});
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(multer({ storage: fileStorage ,fileFilter : fileFilter}).single('image'));
 
 app.use(
   session({
