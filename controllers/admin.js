@@ -1,7 +1,6 @@
 const fileHelper = require('../util/file');
 const { validationResult } = require('express-validator');
 const Product = require('../models/product');
-const product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
@@ -64,11 +63,11 @@ exports.postAddProduct = (req, res, next) => {
   product.save()
     .then(result => {
       // console.log(result);
-      console.log('Product Created !');
+      //console.log('Product Created !');
       res.redirect('/admin/products');
     })
     .catch(err => {
-      console.log(err);
+     // console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -97,7 +96,7 @@ exports.getEditProduct = (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err)
+      //console.log(err)
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -143,12 +142,12 @@ exports.postEditProduct = (req, res, next) => {
       }
       return product.save()
         .then(result => {
-          console.log(' PRODUCT UPDATED !');
+          //console.log(' PRODUCT UPDATED !');
           res.redirect('/admin/products');
         });
     })
     .catch(err => {
-      console.log(err)
+      //console.log(err)
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -166,7 +165,7 @@ exports.getProducts = (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err)
+      //console.log(err)
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -184,11 +183,11 @@ exports.DeleteProduct = (req, res, next) => {
       return Product.deleteOne({ _id: prodId, userId: req.user._id })
     })
     .then(() => {
-      console.log('PRODUCT DESTROYED !');
+      //console.log('PRODUCT DESTROYED !');
       res.status(200).json({ message: 'sucess' });
     })
     .catch(err => {
-      console.log(err)
+     // console.log(err)
       res.status(500).json({ message: 'Failed to Delete' });
     });
 };

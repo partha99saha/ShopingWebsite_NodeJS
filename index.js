@@ -2,16 +2,18 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const app = express();
-
 const bodyParser = require("body-parser");
+const cors = require('cors');
 const multer = require('multer');
-const mongoose = require("mongoose");
-
+require('dotenv').config(
+  { path: path.join(__dirname, './', 'config', '.env') })
+const fileHandler = require('./config/fileHandler');
 const session = require("express-session");
 const csrf = require("csurf");
 const csrfProtection = csrf();
 const flash = require("connect-flash");
 const MongoDBStore = require("connect-mongodb-session")(session);
+app.use(cors());
 
 const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
@@ -28,26 +30,12 @@ const authRoutes = require("./routes/auth");
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'images');
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  }
-});
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-app.use('/images',express.static(path.join(__dirname, "images")));
-app.use(multer({ storage: fileStorage ,fileFilter : fileFilter}).single('image'));
+app.use('/images', express.static(path.join(__dirname, "images")));
+app.use(multer({
+  storage: fileHandler.fileStorage, fileFilter: fileHandler.fileFilter
+}).single('image'));
 
 app.use(
   session({
@@ -100,15 +88,8 @@ app.use((error, req, res, next) => {
   })
 });
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then((result) => {
-    console.log("--- connected to MongoDB ---");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-const port = process.env.port || 4000;
+require('./config/dbConfig')
+const port = process.env.port;
 app.listen(port, () => {
   console.log(`server is running on: http://localhost:${port}`);
 });

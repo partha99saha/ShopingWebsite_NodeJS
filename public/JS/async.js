@@ -14,11 +14,11 @@ const deleteProduct = btn => {
         return result.json();
       })
       .then(data => {
-        console.log(data);
+        //console.log(data);
         productElement.parentNode.removeChild(productElement);
       })
       .catch(err => {
-        console.log(err);
+       // console.log(err);
       });
   };
   

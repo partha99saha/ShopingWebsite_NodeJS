@@ -82,7 +82,7 @@ exports.postLogin = (req, res, next) => {
             req.session.isLoggedIn = true;
             req.session.user = user;
             return req.session.save(err => {
-              console.log(err);
+              //console.log(err);
               res.redirect('/');
             });
           }
@@ -98,12 +98,12 @@ exports.postLogin = (req, res, next) => {
           });
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
           res.redirect('/login');
         });
     })
     .catch(err => {
-      console.log(err)
+      //console.log(err)
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -153,7 +153,7 @@ exports.postSignup = (req, res, next) => {
       // })
     })
     .catch(err => {
-      console.log(err)
+      //console.log(err)
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -162,7 +162,7 @@ exports.postSignup = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy((err) => {
-    console.log(err);
+    //console.log(err);
     res.redirect("/login");
   });
 };
@@ -184,7 +184,7 @@ exports.getReset = (req, res, next) => {
 exports.postReset = (req, res, next) => {
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
-      console.log(err);
+      //console.log(err);
       return res.redirect('/reset');
     }
     const token = buffer.toString('hex');
@@ -206,12 +206,14 @@ exports.postReset = (req, res, next) => {
           subject: 'Password reset',
           html: `
             <p>Password reset</p>
-            <p>Click this : <a href="http://localhost:3000/reset/${token}">reset</a> to set a new password.</p>
+            <p>Click this : 
+            <a href="http://localhost:6000/reset/${token}">reset</a> 
+              to set a new password.</p>
           `
         });
       })
       .catch(err => {
-        console.log(err)
+        //console.log(err)
         const error = new Error(err);
         error.httpStatusCode = 500;
         return next(error);
@@ -238,7 +240,7 @@ exports.getNewPassword = (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err)
+      //console.log(err)
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -270,7 +272,7 @@ exports.postNewPassword = (req, res, next) => {
       res.redirect('/login');
     })
     .catch(err => {
-      console.log(err)
+      //console.log(err)
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
