@@ -1,4 +1,5 @@
 config/.env
 node_modules
-data/*
+data/invoices/*
 images/*
+.vscode
